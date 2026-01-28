@@ -1,0 +1,20 @@
+# IDE
+.vs/
+*.suo
+*.user
+*.usercode
+...
+
+# Build results
+[Dd]ebug/
+[Rr]elease/
+bin/
+obj/
+...
+
+# Packages
+**/packages.*
+...
+
+# Temporary files
+...
