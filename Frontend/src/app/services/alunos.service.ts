@@ -3,11 +3,12 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 export interface AlunoDto {
-  id: string;
+  codAluno: string;
   nome: string;
   cpf: string;
   celular: string;
   dataNascimento: string;
+  codEscola: string;
 }
 
 export interface PagedResult<T> {
@@ -22,6 +23,7 @@ export interface CreateAlunoRequest {
   cpf: string;
   celular: string;
   dataNascimento: string;
+  codEscola: string;
 }
 
 export interface UpdateAlunoRequest extends CreateAlunoRequest {}

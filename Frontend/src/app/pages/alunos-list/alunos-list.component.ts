@@ -95,7 +95,7 @@ export class AlunosListComponent implements OnInit {
 
   remove(aluno: any): void {
     // if (!confirm('Confirmar exclusão?')) return;
-    this.service.delete(aluno.id).subscribe(() => {
+    this.service.delete(aluno.codAluno).subscribe(() => {
       // Se deletar o último item da página atual e não for a primeira página, volta uma página
       if (this.alunos.length === 1 && this.page > 1) {
         this.page--;
