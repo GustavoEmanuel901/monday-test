@@ -1,0 +1,57 @@
+<div
+  class="flex justify-center items-center min-h-screen bg-gradient-to-br from-purple-600 to-indigo-700"
+>
+  <div class="bg-white rounded-xl shadow-2xl p-10 w-full max-w-md">
+    <h1 class="text-3xl font-bold text-center text-gray-800 mb-8">Login</h1>
+
+    <form (ngSubmit)="onSubmit()" class="space-y-6">
+      <div class="flex flex-col gap-2">
+        <label for="username" class="text-sm font-medium text-gray-700">Usuário</label>
+        <input
+          id="username"
+          type="text"
+          [(ngModel)]="username"
+          name="username"
+          placeholder="Digite seu usuário"
+          [disabled]="isLoading()"
+          required
+          class="px-4 py-3 border-2 border-gray-200 rounded-lg text-base transition-all duration-300 focus:outline-none focus:border-purple-600 focus:ring-4 focus:ring-purple-100 disabled:bg-gray-100 disabled:cursor-not-allowed"
+        />
+      </div>
+
+      <div class="flex flex-col gap-2">
+        <label for="password" class="text-sm font-medium text-gray-700">Senha</label>
+        <input
+          id="password"
+          type="password"
+          [(ngModel)]="password"
+          name="password"
+          placeholder="Digite sua senha"
+          [disabled]="isLoading()"
+          required
+          class="px-4 py-3 border-2 border-gray-200 rounded-lg text-base transition-all duration-300 focus:outline-none focus:border-purple-600 focus:ring-4 focus:ring-purple-100 disabled:bg-gray-100 disabled:cursor-not-allowed"
+        />
+      </div>
+
+      @if (errorMessage()) {
+        <div
+          class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm text-center"
+        >
+          {{ errorMessage() }}
+        </div>
+      }
+
+      <button
+        type="submit"
+        [disabled]="isLoading()"
+        class="w-full py-3.5 bg-gradient-to-r from-purple-600 to-indigo-700 text-white rounded-lg font-semibold text-base transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 disabled:opacity-60 disabled:cursor-not-allowed disabled:transform-none active:translate-y-0 mt-2"
+      >
+        @if (isLoading()) {
+          <span>Carregando...</span>
+        } @else {
+          <span>Entrar</span>
+        }
+      </button>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,53 @@
+<div class="min-h-screen bg-gradient-to-br from-purple-600 to-indigo-700">
+  <nav class="bg-white shadow-lg">
+    <div class="max-w-7xl mx-auto px-8 py-6 flex justify-between items-center">
+      <h1 class="text-2xl font-semibold text-gray-800">Dashboard</h1>
+      <button
+        (click)="logout()"
+        class="px-6 py-2.5 bg-red-500 text-white rounded-lg font-medium transition-all duration-300 hover:bg-red-600 hover:-translate-y-0.5 hover:shadow-lg"
+      >
+        Sair
+      </button>
+    </div>
+  </nav>
+
+  <main class="max-w-7xl mx-auto px-8 py-12">
+    <div class="bg-white rounded-xl shadow-2xl p-10 mb-8 text-center">
+      <h2 class="text-3xl font-bold text-gray-800 mb-4">Bem-vindo!</h2>
+      <p class="text-lg text-gray-600 mb-2">Você está em uma rota protegida.</p>
+      <p class="text-lg text-gray-600">
+        Esta página só é acessível após autenticação com token JWT.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div
+        class="bg-white rounded-xl shadow-lg p-8 transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl"
+      >
+        <h3 class="text-xl font-bold text-gray-800 mb-3">🔒 Autenticação</h3>
+        <p class="text-base text-gray-600">Sistema de login com JWT Token</p>
+      </div>
+
+      <div
+        class="bg-white rounded-xl shadow-lg p-8 transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl"
+      >
+        <h3 class="text-xl font-bold text-gray-800 mb-3">🛡️ Rotas Protegidas</h3>
+        <p class="text-base text-gray-600">Guard implementado para segurança</p>
+      </div>
+
+      <div
+        class="bg-white rounded-xl shadow-lg p-8 transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl"
+      >
+        <h3 class="text-xl font-bold text-gray-800 mb-3">🔄 Interceptor</h3>
+        <p class="text-base text-gray-600">Token enviado automaticamente nas requisições</p>
+      </div>
+
+      <div
+        class="bg-white rounded-xl shadow-lg p-8 transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl"
+      >
+        <h3 class="text-xl font-bold text-gray-800 mb-3">🌐 API Backend</h3>
+        <p class="text-base text-gray-600">Comunicação com localhost:8080</p>
+      </div>
+    </div>
+  </main>
+</div>
