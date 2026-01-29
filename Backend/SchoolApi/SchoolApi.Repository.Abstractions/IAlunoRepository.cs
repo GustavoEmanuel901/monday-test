@@ -5,6 +5,7 @@ namespace SchoolApi.Repository.Abstractions;
 public interface IAlunoRepository
 {
     Task<AlunoRecord?> GetByIdAsync(int id);
+    Task<AlunoRecord?> GetByCpfAsync(string cpf);
     Task<(IReadOnlyList<AlunoRecord> Items, int TotalItems)> ListAsync(
         string? nameFilter,
         string? cpfFilter,

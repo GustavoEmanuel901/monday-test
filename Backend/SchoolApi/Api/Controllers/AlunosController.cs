@@ -18,13 +18,10 @@ public class AlunosController : ControllerBase
     public async Task<ActionResult<PagedResultDto<AlunoDTO>>> List(
         [FromQuery] string? nome,
         [FromQuery] string? cpf,
-        [FromQuery] bool? active,
-        [FromQuery] string? sortField,
-        [FromQuery] string? sortDir,
         [FromQuery] int page = 1,
         [FromQuery] int pageSize = 10)
     {
-        var result = await _service.ListAsync(nome, cpf, active, sortField, sortDir, page, pageSize);
+        var result = await _service.ListAsync(nome, cpf, page, pageSize);
         return Ok(result);
     }
 

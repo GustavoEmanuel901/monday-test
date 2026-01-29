@@ -10,10 +10,7 @@ public interface IAlunoService
     Task<AlunoDTO?> GetByIdAsync(int id);
     Task<PagedResultDto<AlunoDTO>> ListAsync(
         string? nameFilter,
-        string? emailFilter,
-        bool? activeFilter,
-        string? sortField,
-        string? sortDir,
+        string? cpfFilter,
         int page,
         int pageSize);
     Task<AlunoDTO> CreateAsync(CriarAlunoDTO request);

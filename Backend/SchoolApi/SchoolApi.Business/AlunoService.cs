@@ -10,10 +10,12 @@ namespace SchoolApi.Business;
 public class AlunoService : IAlunoService
 {
     private readonly IAlunoRepository _repository;
+    private readonly IEscolaRepository _escolaRepository;
 
-    public AlunoService(IAlunoRepository repository)
+    public AlunoService(IAlunoRepository repository, IEscolaRepository escolaRepository)
     {
         _repository = repository;
+        _escolaRepository = escolaRepository;
     }
 
     public async Task<AlunoDTO?> GetByIdAsync(int id)
@@ -25,9 +27,6 @@ public class AlunoService : IAlunoService
     public async Task<PagedResultDto<AlunoDTO>> ListAsync(
         string? nameFilter,
         string? cpfFilter,
-        bool? activeFilter,
-        string? sortField,
-        string? sortDir,
         int page,
         int pageSize)
     {
@@ -49,6 +48,8 @@ public class AlunoService : IAlunoService
     public async Task<AlunoDTO> CreateAsync(CriarAlunoDTO request)
     {
         ValidateCreate(request);
+        await EnsureCpfUniqueAsync(request.Cpf, null);
+        await EnsureEscolaExistsAsync(request.CodEscola);
         var rec = new AlunoRecord
         {
             SNome = request.Nome.Trim(),
@@ -56,7 +57,7 @@ public class AlunoService : IAlunoService
             SEndereco = request.Endereco.Trim(),
             SCelular = request.Celular.Trim(),
             DNascimento = request.DataNascimento,
-            ICodEscola = 0
+            ICodEscola = request.CodEscola
         };
         var created = await _repository.CreateAsync(rec);
         return ToDto(created);
@@ -68,11 +69,15 @@ public class AlunoService : IAlunoService
         var existing = await _repository.GetByIdAsync(id);
         if (existing is null) return null;
         
+        await EnsureCpfUniqueAsync(request.Cpf, id);
+        await EnsureEscolaExistsAsync(request.CodEscola);
+        
         existing.SNome = request.Nome.Trim();
         existing.SCpf = request.Cpf.Trim();
         existing.SEndereco = request.Endereco.Trim();
         existing.SCelular = request.Celular.Trim();
         existing.DNascimento = request.DataNascimento;
+        existing.ICodEscola = request.CodEscola;
         
         var updated = await _repository.UpdateAsync(existing);
         return updated is null ? null : ToDto(updated);
@@ -86,8 +91,8 @@ public class AlunoService : IAlunoService
             throw new ArgumentException("Nome é obrigatório", nameof(r.Nome));
         if (string.IsNullOrWhiteSpace(r.Cpf)) 
             throw new ArgumentException("CPF é obrigatório", nameof(r.Cpf));
-        if (string.IsNullOrWhiteSpace(r.Celular) || !Regex.IsMatch(r.Celular, @"^\d{8,}$")) 
-            throw new ArgumentException("Celular deve ter no mínimo 8 dígitos", nameof(r.Celular));
+        if (string.IsNullOrWhiteSpace(r.Celular) || !Regex.IsMatch(r.Celular, @"^\(?\d{2}\)?\s?\d{4,5}-?\d{4}$")) 
+            throw new ArgumentException("Celular inválido. Use formato: (41) 996814278 ou 41996814278", nameof(r.Celular));
         if (r.DataNascimento == default) 
             throw new ArgumentException("Data de nascimento inválida", nameof(r.DataNascimento));
     }
@@ -98,10 +103,24 @@ public class AlunoService : IAlunoService
             throw new ArgumentException("Nome é obrigatório", nameof(r.Nome));
         if (string.IsNullOrWhiteSpace(r.Cpf)) 
             throw new ArgumentException("CPF é obrigatório", nameof(r.Cpf));
-        if (string.IsNullOrWhiteSpace(r.Celular) || !Regex.IsMatch(r.Celular, @"^\d{8,}$")) 
-            throw new ArgumentException("Celular deve ter no mínimo 8 dígitos", nameof(r.Celular));
+        if (string.IsNullOrWhiteSpace(r.Celular) || !Regex.IsMatch(r.Celular, @"^\(?\d{2}\)?\s?\d{4,5}-?\d{4}$")) 
+            throw new ArgumentException("Celular inválido. Use formato: (41) 996814278 ou 41996814278", nameof(r.Celular));
         if (r.DataNascimento == default) 
             throw new ArgumentException("Data de nascimento inválida", nameof(r.DataNascimento));
+    }
+
+    private async Task EnsureCpfUniqueAsync(string cpf, int? ignoreId)
+    {
+        var found = await _repository.GetByCpfAsync(cpf.Trim());
+        if (found != null && (!ignoreId.HasValue || found.ICodAluno != ignoreId.Value))
+            throw new InvalidOperationException("CPF já cadastrado");
+    }
+
+    private async Task EnsureEscolaExistsAsync(int codEscola)
+    {
+        var escola = await _escolaRepository.GetByIdAsync(codEscola);
+        if (escola == null)
+            throw new ArgumentException($"Escola com código {codEscola} não encontrada", nameof(codEscola));
     }
 
     private static AlunoDTO ToDto(AlunoRecord r) => new()

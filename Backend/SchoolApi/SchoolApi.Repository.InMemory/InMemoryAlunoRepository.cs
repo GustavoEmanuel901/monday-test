@@ -1,5 +1,4 @@
 using System.Collections.Concurrent;
-using System.Linq;
 using SchoolApi.Business.Abstractions.Models;
 using SchoolApi.Repository.Abstractions;
 
@@ -12,6 +11,12 @@ public class InMemoryAlunoRepository : IAlunoRepository
     public Task<AlunoRecord?> GetByIdAsync(int id)
     {
         _store.TryGetValue(id, out var record);
+        return Task.FromResult(record);
+    }
+
+    public Task<AlunoRecord?> GetByCpfAsync(string cpf)
+    {
+        var record = _store.Values.FirstOrDefault(a => a.SCpf == cpf);
         return Task.FromResult(record);
     }
 
