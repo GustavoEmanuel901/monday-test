@@ -42,8 +42,6 @@ export class AlunosListComponent implements OnInit {
   cpf = '';
   page = 1;
   pageSize = 10;
-  sortField: 'nome' | 'cpf' = 'nome';
-  sortDir: 'asc' | 'desc' = 'asc';
   totalItems = 0;
   totalPages = 1;
 

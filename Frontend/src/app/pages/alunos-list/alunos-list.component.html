@@ -31,30 +31,6 @@
           class="px-4 py-2.5 border-2 border-gray-200 rounded-lg text-base transition-all duration-300 focus:outline-none focus:border-purple-600 focus:ring-4 focus:ring-purple-100 hover:border-gray-300"
         />
       </div>
-
-      <div class="flex flex-col gap-2">
-        <label class="text-sm font-medium text-gray-700">Ordenar por</label>
-        <select
-          [(ngModel)]="sortField"
-          name="sortField"
-          class="px-4 py-2.5 border-2 border-gray-200 rounded-lg text-base transition-all duration-300 focus:outline-none focus:border-purple-600 focus:ring-4 focus:ring-purple-100 hover:border-gray-300 cursor-pointer"
-        >
-          <option value="nome">Nome</option>
-          <option value="cpf">CPF</option>
-        </select>
-      </div>
-
-      <div class="flex flex-col gap-2">
-        <label class="text-sm font-medium text-gray-700">Direção</label>
-        <select
-          [(ngModel)]="sortDir"
-          name="sortDir"
-          class="px-4 py-2.5 border-2 border-gray-200 rounded-lg text-base transition-all duration-300 focus:outline-none focus:border-purple-600 focus:ring-4 focus:ring-purple-100 hover:border-gray-300 cursor-pointer"
-        >
-          <option value="asc">Crescente</option>
-          <option value="desc">Decrescente</option>
-        </select>
-      </div>
     </app-filter-card>
 
     <!-- Table -->
