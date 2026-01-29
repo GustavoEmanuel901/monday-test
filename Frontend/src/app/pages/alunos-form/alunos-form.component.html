@@ -54,8 +54,12 @@
             name="nome"
             placeholder="Digite o nome completo"
             required
+            [class.border-red-500]="fieldErrors['nome']"
             class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent transition-all duration-300"
           />
+          @if (fieldErrors['nome']) {
+            <p class="text-red-500 text-sm mt-1">{{ fieldErrors['nome'] }}</p>
+          }
         </div>
 
         <!-- CPF -->
@@ -68,9 +72,14 @@
             [(ngModel)]="form.cpf"
             name="cpf"
             placeholder="000.000.000-00"
+            (input)="onCpfInput($event)"
             required
+            [class.border-red-500]="fieldErrors['cpf']"
             class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent transition-all duration-300"
           />
+          @if (fieldErrors['cpf']) {
+            <p class="text-red-500 text-sm mt-1">{{ fieldErrors['cpf'] }}</p>
+          }
         </div>
 
         <!-- Celular -->
@@ -83,9 +92,14 @@
             [(ngModel)]="form.celular"
             name="celular"
             placeholder="(00) 00000-0000"
+            (input)="onCelularInput($event)"
             required
+            [class.border-red-500]="fieldErrors['celular']"
             class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent transition-all duration-300"
           />
+          @if (fieldErrors['celular']) {
+            <p class="text-red-500 text-sm mt-1">{{ fieldErrors['celular'] }}</p>
+          }
         </div>
 
         <!-- Data de Nascimento -->
@@ -98,27 +112,35 @@
             [(ngModel)]="form.dataNascimento"
             name="dataNascimento"
             required
+            [class.border-red-500]="fieldErrors['dataNascimento']"
             class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent transition-all duration-300"
           />
+          @if (fieldErrors['dataNascimento']) {
+            <p class="text-red-500 text-sm mt-1">{{ fieldErrors['dataNascimento'] }}</p>
+          }
         </div>
+      </div>
 
-        <!-- Escola -->
-        <div>
-          <label class="block text-sm font-semibold text-gray-700 mb-2">
-            Escola <span class="text-red-500">*</span>
-          </label>
-          <select
-            [(ngModel)]="form.codEscola"
-            name="codEscola"
-            required
-            class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent transition-all duration-300 bg-white"
-          >
-            <option value="">Selecione uma escola</option>
-            @for (escola of escolas; track escola.codEscola) {
-              <option [value]="escola.codEscola">{{ escola.descricao }}</option>
-            }
-          </select>
-        </div>
+      <!-- Escola -->
+      <div>
+        <label class="block text-sm font-semibold text-gray-700 mb-2">
+          Escola <span class="text-red-500">*</span>
+        </label>
+        <select
+          [(ngModel)]="form.codEscola"
+          name="codEscola"
+          required
+          [class.border-red-500]="fieldErrors['codEscola']"
+          class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent transition-all duration-300 bg-white"
+        >
+          <option value="">Selecione uma escola</option>
+          @for (escola of escolas; track escola.codEscola) {
+            <option [value]="escola.codEscola">{{ escola.descricao }}</option>
+          }
+        </select>
+        @if (fieldErrors['codEscola']) {
+          <p class="text-red-500 text-sm mt-1">{{ fieldErrors['codEscola'] }}</p>
+        }
       </div>
 
       <!-- Actions -->

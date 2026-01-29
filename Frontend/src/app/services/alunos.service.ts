@@ -42,13 +42,13 @@ export class AlunosService {
   constructor(private http: HttpClient) {}
 
   list(
-    name?: string,
+    nome?: string,
     cpf?: string,
     page: number = 1,
     pageSize: number = 10,
   ): Observable<PagedResult<AlunoDto>> {
     const params: any = { page, pageSize };
-    if (name) params.name = name;
+    if (nome) params.nome = nome;
     if (cpf) params.cpf = cpf;
     return this.http.get<PagedResult<AlunoDto>>(this.baseUrl, { params });
   }
