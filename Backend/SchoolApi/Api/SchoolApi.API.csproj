@@ -3,6 +3,12 @@
   <ItemGroup>
     <ProjectReference Include="..\SchoolApi.Business\SchoolApi.Business.csproj" />
     <ProjectReference Include="..\SchoolApi.Business.Abstractions\SchoolApi.Business.Abstractions.csproj" />
+    <ProjectReference Include="..\SchoolApi.Repository.Abstractions\SchoolApi.Repository.Abstractions.csproj" />
+    <ProjectReference Include="..\SchoolApi.Repository.InMemory\SchoolApi.Repository.InMemory.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.10.2" />
   </ItemGroup>
 
   <PropertyGroup>
