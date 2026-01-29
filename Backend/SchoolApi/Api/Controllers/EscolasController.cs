@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using Clientes.Business.Abstractions.DTOs;
 using SchoolApi.Business.Abstractions;
 using SchoolApi.Business.Abstractions.DTOs;
@@ -6,6 +7,7 @@ using SchoolApi.Business.Abstractions.Models;
 
 namespace SchoolApi.Api.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class EscolasController : ControllerBase
