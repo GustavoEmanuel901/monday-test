@@ -46,7 +46,13 @@ export class AlunosFormComponent implements OnInit {
         this.form.cpf = aluno.cpf;
         this.form.celular = aluno.celular;
         // Convert to yyyy-MM-dd format for input[type="date"]
-        this.form.dataNascimento = aluno.dataNascimento.split('T')[0];
+        if (aluno.dataNascimento) {
+          const date = new Date(aluno.dataNascimento);
+          const year = date.getFullYear();
+          const month = String(date.getMonth() + 1).padStart(2, '0');
+          const day = String(date.getDate()).padStart(2, '0');
+          this.form.dataNascimento = `${year}-${month}-${day}`;
+        }
         this.loading = false;
       },
       error: (err) => {

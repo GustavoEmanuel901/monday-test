@@ -39,7 +39,11 @@ export class EscolasService {
     pageSize: number = 10,
   ): Observable<PagedResult<EscolaDto>> {
     const params: any = { page, pageSize };
-    if (descricao) params.descricao = descricao;
+    // Só adiciona descricao se tiver valor
+    if (descricao && descricao.trim()) {
+      params.descricao = descricao;
+    }
+    console.log('EscolasService - Chamando API com params:', params);
     return this.http.get<PagedResult<EscolaDto>>(this.baseUrl, { params });
   }
 

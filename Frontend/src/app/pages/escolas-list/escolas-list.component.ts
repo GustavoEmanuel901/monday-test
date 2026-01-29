@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
@@ -22,7 +22,7 @@ import { EscolasService, EscolaDto } from '../../services/escolas.service';
 })
 export class EscolasListComponent implements OnInit {
   columns: TableColumn[] = [
-    { key: 'id', label: 'ID', align: 'left' },
+    { key: 'codEscola', label: 'ID', align: 'left' },
     { key: 'descricao', label: 'Descrição', align: 'left' },
   ];
 
@@ -36,6 +36,7 @@ export class EscolasListComponent implements OnInit {
   constructor(
     private service: EscolasService,
     private router: Router,
+    private cdr: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {
@@ -52,6 +53,7 @@ export class EscolasListComponent implements OnInit {
       this.escolas = res.itens;
       this.totalItems = res.totalItens;
       this.totalPages = Math.max(1, Math.ceil(res.totalItens / this.pageSize));
+      this.cdr.detectChanges();
     });
   }
 
@@ -61,8 +63,14 @@ export class EscolasListComponent implements OnInit {
   }
 
   remove(escola: any): void {
-    if (!confirm('Confirmar exclusão?')) return;
-    this.service.delete(escola.id).subscribe(() => this.load());
+    // if (!confirm('Confirmar exclusão?')) return;
+    this.service.delete(escola.codEscola).subscribe(() => {
+      // Se deletar o último item da página atual e não for a primeira página, volta uma página
+      if (this.escolas.length === 1 && this.page > 1) {
+        this.page--;
+      }
+      this.loadData();
+    });
   }
 
   onNovaEscola(): void {

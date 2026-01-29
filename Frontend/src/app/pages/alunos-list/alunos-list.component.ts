@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
@@ -50,6 +50,7 @@ export class AlunosListComponent implements OnInit {
   constructor(
     private service: AlunosService,
     private router: Router,
+    private cdr: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {
@@ -70,6 +71,7 @@ export class AlunosListComponent implements OnInit {
       this.alunos = res.itens;
       this.totalItems = res.totalItens;
       this.totalPages = Math.max(1, Math.ceil(res.totalItens / this.pageSize));
+      this.cdr.detectChanges();
     });
   }
 
@@ -92,7 +94,13 @@ export class AlunosListComponent implements OnInit {
   }
 
   remove(aluno: any): void {
-    if (!confirm('Confirmar exclusão?')) return;
-    this.service.delete(aluno.id).subscribe(() => this.load());
+    // if (!confirm('Confirmar exclusão?')) return;
+    this.service.delete(aluno.id).subscribe(() => {
+      // Se deletar o último item da página atual e não for a primeira página, volta uma página
+      if (this.alunos.length === 1 && this.page > 1) {
+        this.page--;
+      }
+      this.loadData();
+    });
   }
 }

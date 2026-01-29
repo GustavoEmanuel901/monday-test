@@ -18,7 +18,10 @@ import { CommonModule } from '@angular/common';
         </svg>
         Filtros de Busca
       </h3>
-      <form (submit)="onSearch()" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+      <form
+        (submit)="onSearch($event)"
+        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4"
+      >
         <ng-content></ng-content>
 
         <div class="flex items-end">
@@ -44,7 +47,8 @@ import { CommonModule } from '@angular/common';
 export class FilterCardComponent {
   @Output() search = new EventEmitter<void>();
 
-  onSearch(): void {
+  onSearch(event: Event): void {
+    event.preventDefault();
     this.search.emit();
   }
 }

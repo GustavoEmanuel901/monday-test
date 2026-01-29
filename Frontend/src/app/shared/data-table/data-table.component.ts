@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
@@ -8,12 +8,13 @@ import { RouterModule } from '@angular/router';
   imports: [CommonModule, RouterModule],
   templateUrl: './data-table.component.html',
 })
-export class DataTableComponent<T> {
+export class DataTableComponent<T> implements OnChanges {
   @Input() columns: TableColumn[] = [];
   @Input() data: T[] = [];
   @Input() emptyMessage = 'Nenhum registro encontrado';
   @Input() showActions = true;
   @Input() editRoute = '';
+  @Input() idKey = 'id'; // Key to use for the ID in routes
 
   // Pagination inputs
   @Input() showPagination = true;
@@ -23,6 +24,16 @@ export class DataTableComponent<T> {
 
   @Output() deleteItem = new EventEmitter<T>();
   @Output() pageChange = new EventEmitter<number>();
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['data']) {
+      console.log('DataTable - data changed:', {
+        previousValue: changes['data'].previousValue,
+        currentValue: changes['data'].currentValue,
+        dataLength: this.data?.length,
+      });
+    }
+  }
 
   onDelete(item: T): void {
     this.deleteItem.emit(item);
