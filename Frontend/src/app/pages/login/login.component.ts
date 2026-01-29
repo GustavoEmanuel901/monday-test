@@ -36,7 +36,7 @@ export class LoginComponent {
       .subscribe({
         next: () => {
           this.isLoading.set(false);
-          this.router.navigate(['/home']);
+          this.router.navigate(['/alunos']);
         },
         error: (error) => {
           this.isLoading.set(false);

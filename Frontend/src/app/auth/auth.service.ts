@@ -1,5 +1,4 @@
-import { Injectable, inject, PLATFORM_ID } from '@angular/core';
-import { isPlatformBrowser } from '@angular/common';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Observable, BehaviorSubject, tap } from 'rxjs';
@@ -23,8 +22,6 @@ export class AuthService {
 
   private http = inject(HttpClient);
   private router = inject(Router);
-  private platformId = inject(PLATFORM_ID);
-  private isBrowser = isPlatformBrowser(this.platformId);
 
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(this.hasToken());
   public isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
@@ -47,9 +44,6 @@ export class AuthService {
   }
 
   getToken(): string | null {
-    if (!this.isBrowser) {
-      return null;
-    }
     return localStorage.getItem(this.TOKEN_KEY);
   }
 
@@ -58,15 +52,11 @@ export class AuthService {
   }
 
   private setToken(token: string): void {
-    if (this.isBrowser) {
-      localStorage.setItem(this.TOKEN_KEY, token);
-    }
+    localStorage.setItem(this.TOKEN_KEY, token);
   }
 
   private removeToken(): void {
-    if (this.isBrowser) {
-      localStorage.removeItem(this.TOKEN_KEY);
-    }
+    localStorage.removeItem(this.TOKEN_KEY);
   }
 
   private hasToken(): boolean {
