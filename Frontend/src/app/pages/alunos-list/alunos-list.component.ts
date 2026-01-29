@@ -1,16 +1,42 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { AlunosService, AlunoDto } from './../../services/alunos.service';
+import { PageHeaderComponent } from '../../shared/page-header/page-header.component';
+import { FilterCardComponent } from '../../shared/filter-card/filter-card.component';
+import { DataTableComponent, TableColumn } from '../../shared/data-table/data-table.component';
 
 @Component({
   selector: 'app-alunos-list',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    RouterModule,
+    PageHeaderComponent,
+    FilterCardComponent,
+    DataTableComponent,
+  ],
   templateUrl: './alunos-list.component.html',
 })
 export class AlunosListComponent implements OnInit {
+  columns: TableColumn[] = [
+    { key: 'nome', label: 'Nome', align: 'left' },
+    { key: 'cpf', label: 'CPF', align: 'left' },
+    { key: 'celular', label: 'Celular', align: 'left' },
+    {
+      key: 'dataNascimento',
+      label: 'Nascimento',
+      align: 'left',
+      formatter: (value: string) => {
+        if (!value) return '';
+        const date = new Date(value);
+        return date.toLocaleDateString('pt-BR');
+      },
+    },
+  ];
+
   alunos: AlunoDto[] = [];
   nome = '';
   cpf = '';
@@ -21,10 +47,17 @@ export class AlunosListComponent implements OnInit {
   totalItems = 0;
   totalPages = 1;
 
-  constructor(private service: AlunosService) {}
+  constructor(
+    private service: AlunosService,
+    private router: Router,
+  ) {}
 
   ngOnInit(): void {
     this.loadData();
+  }
+
+  onNovoAluno(): void {
+    this.router.navigate(['/alunos/novo']);
   }
 
   load(): void {
@@ -53,8 +86,13 @@ export class AlunosListComponent implements OnInit {
     }
   }
 
-  remove(id: string): void {
+  onPageChange(newPage: number): void {
+    this.page = newPage;
+    this.loadData();
+  }
+
+  remove(aluno: any): void {
     if (!confirm('Confirmar exclusão?')) return;
-    this.service.delete(id).subscribe(() => this.load());
+    this.service.delete(aluno.id).subscribe(() => this.load());
   }
 }

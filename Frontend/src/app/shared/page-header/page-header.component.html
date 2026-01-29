@@ -1,0 +1,36 @@
+<div class="bg-white rounded-xl shadow-lg p-6 mb-6">
+  <div class="flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <div class="bg-gradient-to-r from-purple-600 to-indigo-700 p-3 rounded-lg">
+        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            [attr.d]="iconPath"
+          ></path>
+        </svg>
+      </div>
+      <div>
+        <h2 class="text-2xl font-bold text-gray-800">{{ title }}</h2>
+        <p class="text-sm text-gray-500">{{ description }}</p>
+      </div>
+    </div>
+    @if (showButton && buttonText) {
+      <button
+        (click)="onButtonClick()"
+        class="px-5 py-2.5 bg-gradient-to-r from-purple-600 to-indigo-700 text-white rounded-lg font-semibold transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 flex items-center gap-2"
+      >
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+          ></path>
+        </svg>
+        {{ buttonText }}
+      </button>
+    }
+  </div>
+</div>

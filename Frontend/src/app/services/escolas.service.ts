@@ -2,12 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-export interface AlunoDto {
-  id: string;
-  nome: string;
-  cpf: string;
-  celular: string;
-  dataNascimento: string;
+export interface EscolaDto {
+  codEscola: string;
+  descricao: string;
 }
 
 export interface PagedResult<T> {
@@ -17,14 +14,11 @@ export interface PagedResult<T> {
   totalItens: number;
 }
 
-export interface CreateAlunoRequest {
-  nome: string;
-  cpf: string;
-  celular: string;
-  dataNascimento: string;
+export interface CreateEscolaRequest {
+  descricao: string;
 }
 
-export interface UpdateAlunoRequest extends CreateAlunoRequest {}
+export interface UpdateEscolaRequest extends CreateEscolaRequest {}
 
 export interface ApiError {
   status: number | null;
@@ -33,34 +27,32 @@ export interface ApiError {
 }
 
 @Injectable({ providedIn: 'root' })
-export class AlunosService {
+export class EscolasService {
   private readonly API_URL = 'http://localhost:8080/api';
 
-  private baseUrl = `${this.API_URL}/Alunos`;
+  private baseUrl = `${this.API_URL}/Escolas`;
   constructor(private http: HttpClient) {}
 
   list(
-    name?: string,
-    cpf?: string,
+    descricao?: string,
     page: number = 1,
     pageSize: number = 10,
-  ): Observable<PagedResult<AlunoDto>> {
+  ): Observable<PagedResult<EscolaDto>> {
     const params: any = { page, pageSize };
-    if (name) params.name = name;
-    if (cpf) params.cpf = cpf;
-    return this.http.get<PagedResult<AlunoDto>>(this.baseUrl, { params });
+    if (descricao) params.descricao = descricao;
+    return this.http.get<PagedResult<EscolaDto>>(this.baseUrl, { params });
   }
 
-  getById(id: string): Observable<AlunoDto> {
-    return this.http.get<AlunoDto>(`${this.baseUrl}/${id}`);
+  getById(id: string): Observable<EscolaDto> {
+    return this.http.get<EscolaDto>(`${this.baseUrl}/${id}`);
   }
 
-  create(body: CreateAlunoRequest): Observable<AlunoDto> {
-    return this.http.post<AlunoDto>(this.baseUrl, body);
+  create(body: CreateEscolaRequest): Observable<EscolaDto> {
+    return this.http.post<EscolaDto>(this.baseUrl, body);
   }
 
-  update(id: string, body: UpdateAlunoRequest): Observable<AlunoDto> {
-    return this.http.put<AlunoDto>(`${this.baseUrl}/${id}`, body);
+  update(id: string, body: UpdateEscolaRequest): Observable<EscolaDto> {
+    return this.http.put<EscolaDto>(`${this.baseUrl}/${id}`, body);
   }
 
   delete(id: string): Observable<void> {
@@ -87,14 +79,14 @@ export class AlunosService {
       return { status, message: baseMessage || 'Dados inválidos' };
     }
 
-    // 409: conflito (email duplicado)
+    // 409: conflito
     if (status === 409) {
-      return { status, message: baseMessage || 'Operação em conflito (email já cadastrado?)' };
+      return { status, message: baseMessage || 'Operação em conflito (registro já cadastrado?)' };
     }
 
     // 404: não encontrado
     if (status === 404) {
-      return { status, message: 'Cliente não encontrado' };
+      return { status, message: 'Escola não encontrada' };
     }
 
     // Outros

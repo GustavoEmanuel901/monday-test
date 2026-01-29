@@ -1,0 +1,154 @@
+<div class="bg-white rounded-xl shadow-lg overflow-hidden">
+  <div class="overflow-x-auto">
+    <table class="w-full">
+      <thead class="bg-gradient-to-r from-purple-600 to-indigo-700 text-white">
+        <tr>
+          @for (column of columns; track column.key) {
+            <th
+              class="px-6 py-4 text-sm font-semibold"
+              [ngClass]="{
+                'text-left': column.align === 'left' || !column.align,
+                'text-center': column.align === 'center',
+                'text-right': column.align === 'right',
+              }"
+            >
+              {{ column.label }}
+            </th>
+          }
+          @if (showActions) {
+            <th class="px-6 py-4 text-center text-sm font-semibold">Ações</th>
+          }
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-200">
+        @if (data.length === 0) {
+          <tr>
+            <td
+              [attr.colspan]="columns.length + (showActions ? 1 : 0)"
+              class="px-6 py-12 text-center text-gray-500"
+            >
+              <div class="flex flex-col items-center gap-3">
+                <svg
+                  class="w-16 h-16 text-gray-300"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"
+                  ></path>
+                </svg>
+                <p class="text-lg font-medium">{{ emptyMessage }}</p>
+              </div>
+            </td>
+          </tr>
+        }
+        @for (item of data; track item) {
+          <tr class="hover:bg-gray-50 transition-colors duration-150">
+            @for (column of columns; track column.key) {
+              <td
+                class="px-6 py-4 text-sm"
+                [ngClass]="{
+                  'text-left': column.align === 'left' || !column.align,
+                  'text-center': column.align === 'center',
+                  'text-right': column.align === 'right',
+                  'text-gray-600': true,
+                  'font-medium text-gray-800': column.key === columns[0]?.key,
+                }"
+              >
+                {{
+                  column.formatter
+                    ? column.formatter(getCellValue(item, column.key))
+                    : getCellValue(item, column.key)
+                }}
+              </td>
+            }
+            @if (showActions) {
+              <td class="px-6 py-4 text-center">
+                <div class="flex items-center justify-center gap-2">
+                  <a
+                    [routerLink]="[editRoute, getCellValue(item, 'id')]"
+                    class="px-4 py-2 bg-blue-500 text-white rounded-lg text-sm font-medium transition-all duration-300 hover:bg-blue-600 hover:shadow-md flex items-center gap-1.5"
+                  >
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                      ></path>
+                    </svg>
+                    Editar
+                  </a>
+                  <button
+                    (click)="onDelete(item)"
+                    class="px-4 py-2 bg-red-500 text-white rounded-lg text-sm font-medium transition-all duration-300 hover:bg-red-600 hover:shadow-md flex items-center gap-1.5"
+                  >
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                      ></path>
+                    </svg>
+                    Excluir
+                  </button>
+                </div>
+              </td>
+            }
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Pagination -->
+  @if (showPagination && data.length > 0) {
+    <div
+      class="bg-gray-50 px-6 py-4 border-t border-gray-200 flex flex-col sm:flex-row items-center justify-between gap-4"
+    >
+      <div class="flex items-center gap-4 text-sm text-gray-600">
+        <span class="font-medium">Página {{ currentPage }} de {{ totalPages }}</span>
+        <span class="px-3 py-1 bg-purple-100 text-purple-700 rounded-full font-semibold">
+          Total: {{ totalItems }}
+        </span>
+      </div>
+      <div class="flex items-center gap-2">
+        <button
+          (click)="onPrevPage()"
+          [disabled]="currentPage <= 1"
+          class="px-4 py-2 bg-white border-2 border-gray-300 text-gray-700 rounded-lg font-medium transition-all duration-300 hover:bg-gray-50 hover:border-purple-600 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white disabled:hover:border-gray-300 flex items-center gap-2"
+        >
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M15 19l-7-7 7-7"
+            ></path>
+          </svg>
+          Anterior
+        </button>
+        <button
+          (click)="onNextPage()"
+          [disabled]="currentPage >= totalPages"
+          class="px-4 py-2 bg-white border-2 border-gray-300 text-gray-700 rounded-lg font-medium transition-all duration-300 hover:bg-gray-50 hover:border-purple-600 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white disabled:hover:border-gray-300 flex items-center gap-2"
+        >
+          Próxima
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M9 5l7 7-7 7"
+            ></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+  }
+</div>

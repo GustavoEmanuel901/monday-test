@@ -2,232 +2,72 @@
   <!-- Main Content -->
   <main class="max-w-7xl mx-auto px-6 py-8">
     <!-- Header -->
-    <div class="bg-white rounded-xl shadow-lg p-6 mb-6">
-      <div class="flex items-center justify-between">
-        <div class="flex items-center gap-3">
-          <div class="bg-gradient-to-r from-purple-600 to-indigo-700 p-3 rounded-lg">
-            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
-              ></path>
-            </svg>
-          </div>
-          <div>
-            <h2 class="text-2xl font-bold text-gray-800">Alunos</h2>
-            <p class="text-sm text-gray-500">Gerencie os alunos cadastrados</p>
-          </div>
-        </div>
-      </div>
-    </div>
+    <app-page-header
+      title="Alunos"
+      description="Gerencie os alunos cadastrados"
+      iconPath="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
+      buttonText="Novo Aluno"
+      (buttonClick)="onNovoAluno()"
+    ></app-page-header>
 
-    <!-- Filters Card -->
-    <div class="bg-white rounded-xl shadow-lg p-6 mb-6">
-      <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
-        <svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"
-          ></path>
-        </svg>
-        Filtros de Busca
-      </h3>
-      <form
-        (submit)="$event.preventDefault(); load()"
-        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4"
-      >
-        <div class="flex flex-col gap-2">
-          <label class="text-sm font-medium text-gray-700">Nome</label>
-          <input
-            [(ngModel)]="nome"
-            name="nome"
-            placeholder="Filtrar por nome"
-            class="px-4 py-2.5 border-2 border-gray-200 rounded-lg text-base transition-all duration-300 focus:outline-none focus:border-purple-600 focus:ring-4 focus:ring-purple-100 hover:border-gray-300"
-          />
-        </div>
-
-        <div class="flex flex-col gap-2">
-          <label class="text-sm font-medium text-gray-700">CPF</label>
-          <input
-            [(ngModel)]="cpf"
-            name="cpf"
-            placeholder="Filtrar por CPF"
-            class="px-4 py-2.5 border-2 border-gray-200 rounded-lg text-base transition-all duration-300 focus:outline-none focus:border-purple-600 focus:ring-4 focus:ring-purple-100 hover:border-gray-300"
-          />
-        </div>
-
-        <div class="flex flex-col gap-2">
-          <label class="text-sm font-medium text-gray-700">Ordenar por</label>
-          <select
-            [(ngModel)]="sortField"
-            name="sortField"
-            class="px-4 py-2.5 border-2 border-gray-200 rounded-lg text-base transition-all duration-300 focus:outline-none focus:border-purple-600 focus:ring-4 focus:ring-purple-100 hover:border-gray-300 cursor-pointer"
-          >
-            <option value="nome">Nome</option>
-            <option value="cpf">CPF</option>
-          </select>
-        </div>
-
-        <div class="flex flex-col gap-2">
-          <label class="text-sm font-medium text-gray-700">Direção</label>
-          <select
-            [(ngModel)]="sortDir"
-            name="sortDir"
-            class="px-4 py-2.5 border-2 border-gray-200 rounded-lg text-base transition-all duration-300 focus:outline-none focus:border-purple-600 focus:ring-4 focus:ring-purple-100 hover:border-gray-300 cursor-pointer"
-          >
-            <option value="asc">Crescente</option>
-            <option value="desc">Decrescente</option>
-          </select>
-        </div>
-
-        <div class="flex items-end">
-          <button
-            (click)="load()"
-            class="w-full px-6 py-2.5 bg-gradient-to-r from-purple-600 to-indigo-700 text-white rounded-lg font-semibold transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 flex items-center justify-center gap-2"
-          >
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-              ></path>
-            </svg>
-            Buscar
-          </button>
-        </div>
-      </form>
-    </div>
-
-    <!-- Table Card -->
-    <div class="bg-white rounded-xl shadow-lg overflow-hidden">
-      <div class="overflow-x-auto">
-        <table class="w-full">
-          <thead class="bg-gradient-to-r from-purple-600 to-indigo-700 text-white">
-            <tr>
-              <th class="px-6 py-4 text-left text-sm font-semibold">Nome</th>
-              <th class="px-6 py-4 text-left text-sm font-semibold">CPF</th>
-              <th class="px-6 py-4 text-left text-sm font-semibold">Celular</th>
-              <th class="px-6 py-4 text-left text-sm font-semibold">Nascimento</th>
-              <th class="px-6 py-4 text-center text-sm font-semibold">Ações</th>
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-gray-200">
-            @if (alunos.length === 0) {
-              <tr>
-                <td colspan="5" class="px-6 py-12 text-center text-gray-500">
-                  <div class="flex flex-col items-center gap-3">
-                    <svg
-                      class="w-16 h-16 text-gray-300"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"
-                      ></path>
-                    </svg>
-                    <p class="text-lg font-medium">Nenhum aluno encontrado</p>
-                  </div>
-                </td>
-              </tr>
-            }
-            @for (c of alunos; track c.id) {
-              <tr class="hover:bg-gray-50 transition-colors duration-150">
-                <td class="px-6 py-4 text-sm text-gray-800 font-medium">{{ c.nome }}</td>
-                <td class="px-6 py-4 text-sm text-gray-600">{{ c.cpf }}</td>
-                <td class="px-6 py-4 text-sm text-gray-600">{{ c.celular }}</td>
-                <td class="px-6 py-4 text-sm text-gray-600">
-                  {{ c.dataNascimento | date: 'dd/MM/yyyy' }}
-                </td>
-                <td class="px-6 py-4 text-center">
-                  <div class="flex items-center justify-center gap-2">
-                    <a
-                      [routerLink]="['/alunos', c.id]"
-                      class="px-4 py-2 bg-blue-500 text-white rounded-lg text-sm font-medium transition-all duration-300 hover:bg-blue-600 hover:shadow-md flex items-center gap-1.5"
-                    >
-                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-                        ></path>
-                      </svg>
-                      Editar
-                    </a>
-                    <button
-                      (click)="remove(c.id)"
-                      class="px-4 py-2 bg-red-500 text-white rounded-lg text-sm font-medium transition-all duration-300 hover:bg-red-600 hover:shadow-md flex items-center gap-1.5"
-                    >
-                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                        ></path>
-                      </svg>
-                      Excluir
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            }
-          </tbody>
-        </table>
+    <!-- Filters -->
+    <app-filter-card (search)="load()">
+      <div class="flex flex-col gap-2">
+        <label class="text-sm font-medium text-gray-700">Nome</label>
+        <input
+          [(ngModel)]="nome"
+          name="nome"
+          placeholder="Filtrar por nome"
+          class="px-4 py-2.5 border-2 border-gray-200 rounded-lg text-base transition-all duration-300 focus:outline-none focus:border-purple-600 focus:ring-4 focus:ring-purple-100 hover:border-gray-300"
+        />
       </div>
 
-      <!-- Pagination -->
-      <div
-        class="bg-gray-50 px-6 py-4 border-t border-gray-200 flex flex-col sm:flex-row items-center justify-between gap-4"
-      >
-        <div class="flex items-center gap-4 text-sm text-gray-600">
-          <span class="font-medium">Página {{ page }} de {{ totalPages }}</span>
-          <span class="px-3 py-1 bg-purple-100 text-purple-700 rounded-full font-semibold">
-            Total: {{ totalItems }}
-          </span>
-        </div>
-        <div class="flex items-center gap-2">
-          <button
-            (click)="prev()"
-            [disabled]="page <= 1"
-            class="px-4 py-2 bg-white border-2 border-gray-300 text-gray-700 rounded-lg font-medium transition-all duration-300 hover:bg-gray-50 hover:border-purple-600 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white disabled:hover:border-gray-300 flex items-center gap-2"
-          >
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M15 19l-7-7 7-7"
-              ></path>
-            </svg>
-            Anterior
-          </button>
-          <button
-            (click)="next()"
-            [disabled]="page >= totalPages"
-            class="px-4 py-2 bg-white border-2 border-gray-300 text-gray-700 rounded-lg font-medium transition-all duration-300 hover:bg-gray-50 hover:border-purple-600 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white disabled:hover:border-gray-300 flex items-center gap-2"
-          >
-            Próxima
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M9 5l7 7-7 7"
-              ></path>
-            </svg>
-          </button>
-        </div>
+      <div class="flex flex-col gap-2">
+        <label class="text-sm font-medium text-gray-700">CPF</label>
+        <input
+          [(ngModel)]="cpf"
+          name="cpf"
+          placeholder="Filtrar por CPF"
+          class="px-4 py-2.5 border-2 border-gray-200 rounded-lg text-base transition-all duration-300 focus:outline-none focus:border-purple-600 focus:ring-4 focus:ring-purple-100 hover:border-gray-300"
+        />
       </div>
-    </div>
+
+      <div class="flex flex-col gap-2">
+        <label class="text-sm font-medium text-gray-700">Ordenar por</label>
+        <select
+          [(ngModel)]="sortField"
+          name="sortField"
+          class="px-4 py-2.5 border-2 border-gray-200 rounded-lg text-base transition-all duration-300 focus:outline-none focus:border-purple-600 focus:ring-4 focus:ring-purple-100 hover:border-gray-300 cursor-pointer"
+        >
+          <option value="nome">Nome</option>
+          <option value="cpf">CPF</option>
+        </select>
+      </div>
+
+      <div class="flex flex-col gap-2">
+        <label class="text-sm font-medium text-gray-700">Direção</label>
+        <select
+          [(ngModel)]="sortDir"
+          name="sortDir"
+          class="px-4 py-2.5 border-2 border-gray-200 rounded-lg text-base transition-all duration-300 focus:outline-none focus:border-purple-600 focus:ring-4 focus:ring-purple-100 hover:border-gray-300 cursor-pointer"
+        >
+          <option value="asc">Crescente</option>
+          <option value="desc">Decrescente</option>
+        </select>
+      </div>
+    </app-filter-card>
+
+    <!-- Table -->
+    <app-data-table
+      [columns]="columns"
+      [data]="alunos"
+      [editRoute]="'/alunos'"
+      [currentPage]="page"
+      [totalPages]="totalPages"
+      [totalItems]="totalItems"
+      emptyMessage="Nenhum aluno encontrado"
+      (deleteItem)="remove($event)"
+      (pageChange)="onPageChange($event)"
+    ></app-data-table>
   </main>
 </div>
