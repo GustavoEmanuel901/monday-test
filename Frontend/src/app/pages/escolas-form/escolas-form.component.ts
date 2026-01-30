@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -24,6 +24,7 @@ export class EscolasFormComponent implements OnInit {
     private service: EscolasService,
     private router: Router,
     private route: ActivatedRoute,
+    private cdr: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {
@@ -40,9 +41,14 @@ export class EscolasFormComponent implements OnInit {
     this.service.getById(id).subscribe({
       next: (escola) => {
         this.form.descricao = escola.descricao;
+
+        console.log('Form atualizado:', this.form);
+        this.loading = false;
+        this.cdr.detectChanges();
         this.loading = false;
       },
       error: (err) => {
+        console.error('Erro ao carregar escola:', err);
         const error = this.service.parseError(err);
         this.errorMessage = error.message;
         this.loading = false;
