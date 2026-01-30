@@ -138,8 +138,35 @@ export class AlunosFormComponent implements OnInit {
       },
       error: (err) => {
         const error = this.service.parseError(err);
-        this.errorMessage = error.message;
+
+        // Erro 409 - Conflito (CPF duplicado, etc)
+        if (error.status === 409) {
+          this.errorMessage = error.message || 'Este CPF já está cadastrado no sistema.';
+          if (err.error?.field === 'cpf' || error.message?.toLowerCase().includes('cpf')) {
+            this.fieldErrors['cpf'] = 'Este CPF já está cadastrado';
+          }
+        }
+        // Erro 400 - Validação do backend
+        else if (error.status === 400) {
+          this.errorMessage = error.message;
+          // Se houver detalhes de validação, mapear para os campos
+          if (error.details) {
+            Object.keys(error.details).forEach((field) => {
+              const fieldName = field.toLowerCase();
+              const messages = error.details![field];
+              if (messages && messages.length > 0) {
+                this.fieldErrors[fieldName] = messages[0];
+              }
+            });
+          }
+        }
+        // Outros erros
+        else {
+          this.errorMessage = error.message;
+        }
+
         this.loading = false;
+        this.cdr.detectChanges();
       },
     });
   }
