@@ -92,8 +92,8 @@ Utilize este espaço para descrever decisões técnicas, desafios encontrados ou
 ## 4️⃣ Portfólio e Experiência (opcional)
 
 - Zênite: [https://zenitefacil.com.br/](https://zenitefacil.com.br/)
-- Ficates: [](https://www.iem.inf.br/softwares/detalhe/1/ficates-sistema-de-fiscalizacao-e-calculo-do-transporte-escolar)
-- QrCattle: [](https://qrcattle.com/)
+- Ficates: [https://www.iem.inf.br/softwares/](https://www.iem.inf.br/softwares/detalhe/1/ficates-sistema-de-fiscalizacao-e-calculo-do-transporte-escolar)
+- QrCattle: [https://qrcattle.com/](https://qrcattle.com/)
 
 ---
 
