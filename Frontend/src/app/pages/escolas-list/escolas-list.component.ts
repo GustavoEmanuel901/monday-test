@@ -6,6 +6,7 @@ import { PageHeaderComponent } from '../../shared/page-header/page-header.compon
 import { FilterCardComponent } from '../../shared/filter-card/filter-card.component';
 import { DataTableComponent, TableColumn } from '../../shared/data-table/data-table.component';
 import { EscolasService, EscolaDto } from '../../services/escolas.service';
+import { AlunosService, AlunoDto } from '../../services/alunos.service';
 
 @Component({
   selector: 'app-escolas-list',
@@ -32,9 +33,19 @@ export class EscolasListComponent implements OnInit {
   pageSize = 10;
   totalItems = 0;
   totalPages = 1;
+  
+  // Modal de alunos
+  showAlunosModal = false;
+  alunosEscola: AlunoDto[] = [];
+  escolaSelecionada: EscolaDto | null = null;
+  loadingAlunos = false;
+
+  // Expose Math for template
+  Math = Math;
 
   constructor(
     private service: EscolasService,
+    private alunosService: AlunosService,
     private router: Router,
     private cdr: ChangeDetectorRef,
   ) {}
@@ -75,5 +86,37 @@ export class EscolasListComponent implements OnInit {
 
   onNovaEscola(): void {
     this.router.navigate(['/escolas/novo']);
+  }
+
+  verAlunos(escola: EscolaDto): void {
+    this.escolaSelecionada = escola;
+    this.showAlunosModal = true;
+    this.loadingAlunos = true;
+    this.alunosEscola = [];
+
+    this.alunosService.listBySchool(escola.codEscola).subscribe({
+      next: (alunos) => {
+        this.alunosEscola = alunos;
+        this.loadingAlunos = false;
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        console.error('Erro ao carregar alunos:', err);
+        this.loadingAlunos = false;
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
+  fecharModal(): void {
+    this.showAlunosModal = false;
+    this.escolaSelecionada = null;
+    this.alunosEscola = [];
+  }
+
+  formatarData(data: string): string {
+    if (!data) return '-';
+    const date = new Date(data);
+    return date.toLocaleDateString('pt-BR');
   }
 }

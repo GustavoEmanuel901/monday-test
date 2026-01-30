@@ -69,6 +69,10 @@ export class AlunosService {
     return this.http.delete<void>(`${this.baseUrl}/${id}`);
   }
 
+  listBySchool(codEscola: string): Observable<AlunoDto[]> {
+    return this.http.get<AlunoDto[]>(`${this.baseUrl}/escola/${codEscola}`);
+  }
+
   parseError(error: any): ApiError {
     if (!error) {
       return { status: null, message: 'Erro desconhecido' };
