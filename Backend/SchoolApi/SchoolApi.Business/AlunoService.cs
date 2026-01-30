@@ -83,6 +83,13 @@ public class AlunoService : IAlunoService
         return updated is null ? null : ToDto(updated);
     }
 
+    public async Task<IReadOnlyList<AlunoDTO>> GetByEscolaIdAsync(int escolaId)
+    {
+        await EnsureEscolaExistsAsync(escolaId);
+        var records = await _repository.GetByEscolaIdAsync(escolaId);
+        return records.Select(ToDto).ToList();
+    }
+
     public Task<bool> DeleteAsync(int id) => _repository.DeleteAsync(id);
 
     private void ValidateCreate(CriarAlunoDTO r)

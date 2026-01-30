@@ -47,6 +47,14 @@ public class InMemoryAlunoRepository : IAlunoRepository
         return Task.FromResult<(IReadOnlyList<AlunoRecord>, int)>((items, totalItems));
     }
 
+    public Task<IReadOnlyList<AlunoRecord>> GetByEscolaIdAsync(int escolaId)
+    {
+        var alunos = _store.Values
+            .Where(a => a.ICodEscola == escolaId)
+            .ToList();
+        return Task.FromResult<IReadOnlyList<AlunoRecord>>(alunos);
+    }
+
     public Task<AlunoRecord> CreateAsync(AlunoRecord record)
     {
         var newId = _store.Any() ? _store.Keys.Max() + 1 : 1;

@@ -11,6 +11,7 @@ public interface IAlunoRepository
         string? cpfFilter,
         int page,
         int pageSize);
+    Task<IReadOnlyList<AlunoRecord>> GetByEscolaIdAsync(int escolaId);
     Task<AlunoRecord> CreateAsync(AlunoRecord record);
     Task<AlunoRecord?> UpdateAsync(AlunoRecord record);
     Task<bool> DeleteAsync(int id);

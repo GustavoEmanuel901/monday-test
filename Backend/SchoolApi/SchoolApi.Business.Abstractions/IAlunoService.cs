@@ -13,6 +13,7 @@ public interface IAlunoService
         string? cpfFilter,
         int page,
         int pageSize);
+    Task<IReadOnlyList<AlunoDTO>> GetByEscolaIdAsync(int escolaId);
     Task<AlunoDTO> CreateAsync(CriarAlunoDTO request);
     Task<AlunoDTO?> UpdateAsync(int id, UpdateAlunoDTO request);
     Task<bool> DeleteAsync(int id);

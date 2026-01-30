@@ -35,6 +35,20 @@ public class AlunosController : ControllerBase
         return Ok(dto);
     }
 
+    [HttpGet("escola/{escolaId:int}")]
+    public async Task<ActionResult<IReadOnlyList<AlunoDTO>>> GetByEscola(int escolaId)
+    {
+        try
+        {
+            var alunos = await _service.GetByEscolaIdAsync(escolaId);
+            return Ok(alunos);
+        }
+        catch (ArgumentException ex)
+        {
+            return NotFound(new { error = ex.Message });
+        }
+    }
+
     [HttpPost]
     public async Task<ActionResult<AlunoDTO>> Create([FromBody] CriarAlunoDTO request)
     {
